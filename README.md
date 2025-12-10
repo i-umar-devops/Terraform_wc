@@ -1,20 +1,53 @@
-Search the AMI ID in the AWS and add it in the variables.tf
-PUBLIC_KEY_PATH ADD FULL PATH IN VARIABLES.TF-> 
--> command to generate the pub file ->    ssh-keygen -f oregon-region-key-pair
+# Terraform AWS Infrastructure – Project
 
+This repository contains a Terraform configuration that provisions a basic AWS infrastructure end‑to‑end. It demonstrates my hands‑on experience with Infrastructure as Code on AWS, including use of remote state, variables, key pairs, and repeatable environment creation.
 
-1. Install terraform - https://www.terraform.io/downloads 
-2. Install Python if not already done  https://www.python.org/downloads/
-3. Install aws cli - https://docs.aws.amazon.com/cli/v1/userguide/install-macos.html 
-4. Create access key for terraform https://aws.amazon.com/console/ 
-5. Use aws configure to configure the access keys  [ aws configure command ]
-6. Create a S3 bucket and add the name in config.tf
-7. Define variables.tf and config.tf files.
-8. Create Key pair ->    ssh-keygen -f oregon-region-key-pair 
-9. Run - terraform init
-10. terraform plan -out "file.plan"
-11. terraform apply 
-12. terraform destroy
-13. Define other necessary files. 
+## What this project does
 
+- Uses Terraform to create AWS resources from scratch (based on a chosen AMI ID).
+- Manages configuration via `variables.tf` and `config.tf` for easy reuse across environments.
+- Automates key creation and secure SSH access to EC2 instances.
+- Provides a simple, reproducible workflow: `init` → `plan` → `apply` → `destroy`.
 
+## Prerequisites
+
+- Terraform installed  
+- AWS account and IAM user with programmatic access  
+- AWS CLI installed and configured  
+- Python installed (if needed for helper scripts or tooling)
+
+Useful links (official docs):
+
+- Terraform: https://www.terraform.io/downloads  
+- Python: https://www.python.org/downloads/  
+- AWS CLI install: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html  
+- AWS console (for access keys / S3 bucket): https://aws.amazon.com/console/
+
+## Configuration steps
+
+1. **Update AMI and SSH key path**
+
+   - Find a suitable AMI ID in your AWS region and set it in `variables.tf`.
+   - Generate an SSH key pair and update `PUBLIC_KEY_PATH` in `variables.tf` with the full path:
+     ```
+     ssh-keygen -f oregon-region-key-pair
+     ```
+     This creates `oregon-region-key-pair` and `oregon-region-key-pair.pub`.
+
+2. **Configure AWS credentials**
+
+   - Create an access key for your IAM user in the AWS Console.
+   - Configure the AWS CLI:
+     ```
+     aws configure
+     ```
+   - Ensure the region matches the one used in the Terraform files.
+
+3. **Remote state / S3 bucket**
+
+   - Create an S3 bucket for Terraform state.
+   - Add the bucket name (and region) in `config.tf` as required by your backend configuration.
+
+4. **Review variables and config**
+
+   - Adjust values in `variables.tf` and `config.tf` (e.g. region, instance type, tags) to match your environment.
